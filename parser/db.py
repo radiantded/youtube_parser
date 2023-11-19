@@ -1,4 +1,5 @@
 import psycopg2
+
 from config import (
     DB_HOST, DB_PORT, POSTGRES_DB,
     POSTGRES_PASSWORD, POSTGRES_USER
