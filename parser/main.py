@@ -126,18 +126,19 @@ def script():
             urls = json.loads(file.read())['urls']
     except FileNotFoundError:
         logger.error(f'JSON с ссылками не найден по адресу: {PATH_TO_URLS}')
-    except IndexError:
+    except KeyError:
         logger.error('Неверный формат JSON')
-    parser = YotubeParser()
-    for url in urls:
-        videos = parser.start_parsing(url)
-        if videos:
-            logger.info('Запись данных в БД')
-            try:
-                with Database() as db:
-                    db.write(videos)
-            except Exception as ex:
-                logger.error(f'Ошибка записи в БД: {ex}')
+    else:
+        parser = YotubeParser()
+        for url in urls:
+            videos = parser.start_parsing(url)
+            if videos:
+                logger.info('Запись данных в БД')
+                try:
+                    with Database() as db:
+                        db.write(videos)
+                except Exception as ex:
+                    logger.error(f'Ошибка записи в БД: {ex}')
 
 
 if __name__ == '__main__':
